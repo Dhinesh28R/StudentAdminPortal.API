@@ -7,6 +7,7 @@ namespace StudentAdminPortal.API.Controllers
 {
     //anotate out controller
     [ApiController]
+    [Route("api/Students")]
     public class StudentsController : Controller
     {
         
@@ -22,14 +23,13 @@ namespace StudentAdminPortal.API.Controllers
 
         //GET method
         [HttpGet]
-        [Route("[controller]")]
         public async Task<IActionResult> GetAllStudents()
         {
            var students = await studentRepository.GetStudentsAsync();
 
             return Ok(mapper.Map<List<Student>>(students));
 
-
+             
 
           /*  var domainModelStudents = new List<Student>();
 
@@ -61,5 +61,24 @@ namespace StudentAdminPortal.API.Controllers
             }  */
            // return Ok(domainModelStudents);
         }
+
+
+        [HttpGet]
+        //[Route("GetStudentById/{studentId:guid}")]
+        [Route("{studentId:guid}"), ActionName("GetStudentAsync")]
+        public async Task<IActionResult> GetStudentAsync([FromRoute] Guid studentId)
+        {
+            //Fetch student details by id
+            var student = await studentRepository.GetStudentAsync(studentId);
+
+            //return 
+            if(student == null)
+            {
+                return NotFound();
+            }
+            return Ok(mapper.Map<Student>(student));
+        }
+
+
     }
 }

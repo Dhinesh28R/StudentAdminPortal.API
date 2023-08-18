@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using StudentAdminPortal.API.Model;
 using StudentAdminPortal.API.Repositories;
 
@@ -33,6 +34,16 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+
+//enable CORS policy
+app.UseCors(options=>
+{
+    options.AllowAnyHeader();
+    options.AllowAnyMethod();
+    options.AllowAnyOrigin();
+});
+
 
 app.UseHttpsRedirection();
 
